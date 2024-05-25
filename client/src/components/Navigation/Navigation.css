@@ -1,0 +1,29 @@
+.nav {
+    display: inline-flex;
+    justify-content: center;
+    background-color: #3D393A;
+    color: #fff;
+    width: 100%;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+}
+
+.nav-item {
+    /*color: #aaa;*/
+    color: #aaa;
+    text-decoration: none;
+    padding: 0.8em 1em;
+    margin: 0 0.5em;
+    transition: .3s;
+    z-index: 1;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    position: relative;
+}
+
+.arrow{
+    font-size: 15px;
+}
+
+.nav-item:hover { color: #fff; }

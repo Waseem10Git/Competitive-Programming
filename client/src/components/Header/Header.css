@@ -1,0 +1,37 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #0C0C0C;
+    color: #fff;
+    text-align: center;
+    padding: 1em 0;
+}
+
+.left-logo {
+    margin-left: 0.7em;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.right-services {
+    margin-right: 0.7em;
+    width: 140px;
+}
+
+.darkMode-languages {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 0.5em;
+}
+
+.right-logos {
+    color: #ffffff;
+}
+
+.login-register {
+    color: #ffffff;
+    text-decoration: none;
+}

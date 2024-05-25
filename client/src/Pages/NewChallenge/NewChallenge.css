@@ -1,0 +1,91 @@
+input,
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 16px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    border: 1px solid black;
+}
+
+.button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #555;
+}
+
+.form-container {
+    width: 75%;
+    margin: 3em auto 6em;
+    overflow: hidden;
+    background-color: #eeeeee;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow:0 0 10px 3px #888;
+}
+
+button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+h3 {
+    text-align: center;
+}
+
+.date-start-duration,
+.difficulty-language {
+    display: flex;
+    justify-content: space-between;
+}
+
+.challenge-duration,
+.start-date,
+.program-languages,
+.difficulty-of-task {
+    width: 45%;
+}
+
+.difficulty-of-task > input {
+    border: 1px solid gray;
+}
+
+.block {
+    display: block;
+}
+
+.program-languages-selection {
+    width: 100%;
+    padding: 9px;
+    margin-bottom: 16px;
+    margin-top: 8px;
+    border-radius: 5px;
+}
+
+.react-datepicker-wrapper {
+    width: 100%;
+    margin-top: 9px;
+}
+
+.react-datepicker-ignore-onclickoutside {
+    height: 36px;
+}
+
+.challenge-duration-inputs {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 9px;
+    gap: 2px;
+}

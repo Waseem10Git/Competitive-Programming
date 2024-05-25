@@ -1,0 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
+.solve-challenge {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin: auto;
+    background-color: #121212;
+    height: 100vh;
+    padding: 5px;
+}
+
+.left-side {
+    width: 35%;
+    background-color: #555555;
+    margin-right: 5px;
+    border-radius: 10px;
+    padding-left: 10px;
+}
+
+.right-side {
+    background-color: #555555;
+    width: 65%;
+    border-radius: 7px;
+}
+
+.code-reader {
+    height: 100vh;
+}
