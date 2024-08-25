@@ -3,16 +3,16 @@ import {useEffect, useState} from "react";
 import Axios from "axios";
 
 const Rating = () => {
-
-
     // Get Data For Rating Page
-    const [students, setStudents] = useState([])
+    const [students, setStudents] = useState([]);
+    const [someStudents, setSomeStudents] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {
             try{
                 const response = await Axios.get("http://localhost:3001/students")
                 const sortedData = response.data.sort((a,b) => b.rate - a.rate)
+                setSomeStudents(sortedData.slice(0, 5));
                 setStudents(sortedData);
             }catch (error){
                 console.log('Error fetching data:', error)
@@ -21,15 +21,13 @@ const Rating = () => {
         fetchData();
     }, []);
 
-    const filteredStudents = students.slice(0, 5);
-
     const ratingRows = () => {
         return students.map((student, index) => {
             return(
                 <tr key={index}>
                     <td>{++index}</td>
-                    <td>{student.name}</td>
-                    <td>{student.solve.length}</td>
+                    <td>{student.username}</td>
+                    <td>{student.solvedChallenges.length}</td>
                     <td>{student.rate}</td>
                 </tr>
             )
@@ -85,8 +83,8 @@ const SomeRating = () => {
             return(
                 <tr key={index}>
                     <td>{++index}</td>
-                    <td>{student.name}</td>
-                    <td>{student.solve.length}</td>
+                    <td>{student.username}</td>
+                    <td>{student.solvedChallenges.length}</td>
                     <td>{student.rate}</td>
                 </tr>
             )

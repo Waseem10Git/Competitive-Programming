@@ -7,8 +7,9 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const crypto = require('crypto');
 require('dotenv').config();
-const port = process.env.PORT || 3001;
-const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.tepepau.mongodb.net/CompetitiveProgramming?retryWrites=true&w=majority`
+const port = process.env.PORT;
+// const url = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.tepepau.mongodb.net/CompetitiveProgramming?retryWrites=true&w=majority`
+const url = `mongodb://localhost:27017/CompetitiveProgramming`;
 
 // Generate a random secret key
 const secretKey = crypto.randomBytes(32).toString('hex');
@@ -27,15 +28,27 @@ mongoose.connect(url)
 
 
 // Import Challenge Model
-const ChallengeModel = require('./models/Challenges')
+const ChallengeModel = require('./models/Challenges');
+const UserModel = require('./models/Users');
 
-// Get request
+// Middleware to authenticate JWT
+function authenticateToken(req, res, next) {
+    const authHeader = req.headers["authorization"];
+    const token = authHeader && authHeader.split(" ")[1];
+    if (token == null) return res.sendStatus(401);
+
+    jwt.verify(token, secretKey, (err, user) => {
+        if (err) return res.sendStatus(403);
+        req.user = user;
+        next();
+    });
+}
+
 app.get("/challenges", async (req, res) => {
     const challenges = await ChallengeModel.find();
     res.json(challenges)
 })
 
-// Create Challenge
 app.post("/newChallenge",  async (req, res) => {
     const newChallenge = new ChallengeModel(req.body);
     await newChallenge.save();
@@ -82,7 +95,7 @@ app.post("/challenges", async (req, res) => {
 
     try {
         // Find the user by userId and update their rating
-        await StudentModel.findByIdAndUpdate(userId, { $inc: { rating: increment } });
+        await UserModel.findByIdAndUpdate(userId, { $inc: { rating: increment } });
         res.json({ message: "Rating updated successfully" });
     } catch (error) {
         console.error('Error updating rating:', error);
@@ -90,12 +103,10 @@ app.post("/challenges", async (req, res) => {
     }
 });
 
-// Import Student Model
-const StudentModel = require('./models/Students')
 
-// Get request
+// Get All Students
 app.get("/students", async (req, res) => {
-    const students = await StudentModel.find();
+    const students = await UserModel.find();
     res.json(students)
 })
 
@@ -106,7 +117,7 @@ app.post("/register", async (req, res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         // Create a new user
-        const user = new StudentModel({
+        const user = new UserModel({
             username: req.body.username,
             password: hashedPassword,
         });
@@ -125,7 +136,7 @@ app.post("/register", async (req, res) => {
 app.post("/login", async (req, res) => {
     try {
         // Find the user by username
-        const user = await StudentModel.findOne({ username: req.body.username });
+        const user = await UserModel.findOne({ username: req.body.username });
 
         // If user not found or password doesn't match, return error
         if (!user || !(await bcrypt.compare(req.body.password, user.password))) {
@@ -143,11 +154,6 @@ app.post("/login", async (req, res) => {
     }
 });
 
-
-
-// Create an instance of the router
-const router = express.Router();
-
 // Endpoint to fetch user data for the logged-in user
 app.get('/students', authenticateToken, async (req, res) => {
     try {
@@ -155,7 +161,7 @@ app.get('/students', authenticateToken, async (req, res) => {
         const userId = req.user.userId;
 
         // Fetch user data from the database
-        const user = await StudentModel.findById(userId);
+        const user = await UserModel.findById(userId);
 
         // Check if user exists
         if (!user) {
@@ -170,18 +176,24 @@ app.get('/students', authenticateToken, async (req, res) => {
     }
 });
 
-// Middleware to authenticate JWT
-function authenticateToken(req, res, next) {
-    const authHeader = req.headers["authorization"];
-    const token = authHeader && authHeader.split(" ")[1];
-    if (token == null) return res.sendStatus(401);
 
-    jwt.verify(token, secretKey, (err, user) => {
-        if (err) return res.sendStatus(403);
-        req.user = user;
-        next();
-    });
-}
+app.get('/user/:userId/solved-challenges', async (req, res) => {
+    try {
+        const { userId } = req.params;
+
+        // Populating the solvedChallenges with the full Challenge documents
+        const user = await UserModel.findById(userId).populate('solvedChallenges').exec();
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.json(user.solvedChallenges);
+    } catch (error) {
+        console.error('Error retrieving solved challenges:', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
 
 
 app.listen(port, () => {

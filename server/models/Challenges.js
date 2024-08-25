@@ -1,5 +1,5 @@
 const mongoose = require("mongoose")
-const {Schema} = require("mongoose");
+const { Schema } = require("mongoose");
 
 const ChallengeSchema = new mongoose.Schema({
     title:{
@@ -12,7 +12,8 @@ const ChallengeSchema = new mongoose.Schema({
         type: String
     },
     solved:{
-        type: Number
+        type: Number,
+        default: 0
     },
     rate:{
         type: Number

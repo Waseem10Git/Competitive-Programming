@@ -20,6 +20,7 @@ const UpcomingChallenges = () => {
                 const sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date))
                 const upcomingChallenges = sortedData.filter(challenge => new Date(challenge.date) > currentDate)
                 setChallenges(upcomingChallenges);
+                console.log(challenges)
             }catch (error){
                 console.log('Error fetching data:', error);
             }
@@ -148,47 +149,3 @@ const UpcomingChallenges = () => {
 }
 
 export default UpcomingChallenges
-
-
-
-
-
-// UpcomingChallenges.jsx
-// import "./UpcomingChallenges.css";
-// import { ChallengeRows, formatTimeRemaining } from "../../index";
-// import {UseChallenges} from "../../../components/index";
-//
-// const UpcomingChallenges = () => {
-//     const { challenges, registerStatus } = UseChallenges(challenge => new Date(challenge.date) > new Date());
-//
-//     return (
-//         <>
-//             <div className={"container"}>
-//                 <h2>Upcoming Challenges</h2>
-//                 <table>
-//                     <thead>
-//                     <tr>
-//                         <th>Id</th>
-//                         <th>Name</th>
-//                         <th>Language</th>
-//                         <th>Difficulty</th>
-//                         <th>Solved</th>
-//                         <th>Start</th>
-//                         <th>Duration</th>
-//                         <th>Register</th>
-//                     </tr>
-//                     </thead>
-//                     <tbody>
-//                     <ChallengeRows
-//                         challenges={challenges}
-//                         registerStatus={registerStatus}
-//                         formatTimeRemaining={formatTimeRemaining}
-//                     />
-//                     </tbody>
-//                 </table>
-//             </div>
-//         </>
-//     );
-// }
-//
-// export default UpcomingChallenges;
